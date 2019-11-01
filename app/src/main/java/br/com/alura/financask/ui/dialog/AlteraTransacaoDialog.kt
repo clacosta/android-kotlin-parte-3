@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import br.com.alura.financask.R
 import br.com.alura.financask.delegate.TransacaoDelegate
@@ -21,12 +23,18 @@ import java.util.*
 class AlteraTransacaoDialog(private val viewGroup: ViewGroup,
                             private val context: Context) {
 
-    private val viewCriada = criaLayout()
-    private val campoValor = viewCriada.form_transacao_valor
-    private val campoCategoria = viewCriada.form_transacao_categoria
-    private val campoData = viewCriada.form_transacao_data
+    private val viewCriada: View = criaLayout()
+    private val campoValor: EditText = viewCriada.form_transacao_valor
+    private val campoData: EditText = viewCriada.form_transacao_data
+    private val campoCategoria: Spinner = viewCriada.form_transacao_categoria
 
-    fun chama(tipo: Tipo, transacaoDelegate: TransacaoDelegate) {
+    fun chama(transacao: Transacao, transacaoDelegate: TransacaoDelegate) {
+        val tipo = transacao.tipo
+        campoValor.setText(transacao.valor.toString())
+        campoData.setText(transacao.data.formataParaBrasileiro())
+        val categoriasRetornadas = context.resources.getStringArray(categoriasPor(tipo))
+        val posicaoCategoria = categoriasRetornadas.indexOf(transacao.categoria)
+        campoCategoria.setSelection(posicaoCategoria, true)
         configuraCampoData()
         configuraCampoCategoria(tipo)
         configuraFormulario(tipo, transacaoDelegate)

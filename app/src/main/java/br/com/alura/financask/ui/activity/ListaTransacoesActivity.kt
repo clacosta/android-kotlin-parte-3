@@ -11,6 +11,7 @@ import br.com.alura.financask.model.Transacao
 import br.com.alura.financask.ui.ResumoView
 import br.com.alura.financask.ui.adapter.ListaTransacoesAdapter
 import br.com.alura.financask.ui.dialog.AdicionaTransacaoDialog
+import br.com.alura.financask.ui.dialog.AlteraTransacaoDialog
 import kotlinx.android.synthetic.main.activity_lista_transacoes.*
 
 class ListaTransacoesActivity : AppCompatActivity() {
@@ -62,8 +63,14 @@ class ListaTransacoesActivity : AppCompatActivity() {
     private fun configuraLista() {
         lista_transacoes_listview.adapter = ListaTransacoesAdapter(transacoes, this)
         lista_transacoes_listview.setOnItemClickListener { parent, view, position, id ->
-            var transacao = transacoes[position]
-
+            val transacao = transacoes[position]
+            AlteraTransacaoDialog(window.decorView as ViewGroup, this)
+                    .chama(transacao, object: TransacaoDelegate{
+                        override fun delegate(transacao: Transacao) {
+                            atualizaTransacoes(transacao)
+                            lista_transacoes_adiciona_menu.close(true)
+                        }
+                    })
         }
     }
 
