@@ -30,14 +30,14 @@ class AlteraTransacaoDialog(private val viewGroup: ViewGroup,
 
     fun chama(transacao: Transacao, transacaoDelegate: TransacaoDelegate) {
         val tipo = transacao.tipo
+        configuraCampoData()
+        configuraCampoCategoria(tipo)
+        configuraFormulario(tipo, transacaoDelegate)
         campoValor.setText(transacao.valor.toString())
         campoData.setText(transacao.data.formataParaBrasileiro())
         val categoriasRetornadas = context.resources.getStringArray(categoriasPor(tipo))
         val posicaoCategoria = categoriasRetornadas.indexOf(transacao.categoria)
         campoCategoria.setSelection(posicaoCategoria, true)
-        configuraCampoData()
-        configuraCampoCategoria(tipo)
-        configuraFormulario(tipo, transacaoDelegate)
     }
 
     private fun configuraFormulario(tipo: Tipo, transacaoDelegate: TransacaoDelegate) {
@@ -47,31 +47,31 @@ class AlteraTransacaoDialog(private val viewGroup: ViewGroup,
         AlertDialog.Builder(context)
                 .setTitle(titulo)
                 .setView(viewCriada)
-                .setPositiveButton("Adicionar",
-                        { _, _ ->
-                            val valorEmTexto = campoValor.text.toString()
-                            val dataEmTexto = campoData.text.toString()
-                            val categoriaEmTexto = campoCategoria.selectedItem.toString()
+                .setPositiveButton("Alterar"
+                ) { _, _ ->
+                    val valorEmTexto = campoValor.text.toString()
+                    val dataEmTexto = campoData.text.toString()
+                    val categoriaEmTexto = campoCategoria.selectedItem.toString()
 
-                            val valor = converteCampoValor(valorEmTexto)
-                            val data = dataEmTexto.converteParaCalendar()
+                    val valor = converteCampoValor(valorEmTexto)
+                    val data = dataEmTexto.converteParaCalendar()
 
-                            val transacaoCriada = Transacao(tipo = tipo,
-                                    valor = valor,
-                                    data = data,
-                                    categoria = categoriaEmTexto)
+                    val transacaoCriada = Transacao(tipo = tipo,
+                            valor = valor,
+                            data = data,
+                            categoria = categoriaEmTexto)
 
-                            transacaoDelegate.delegate(transacaoCriada)
-                        })
+                    transacaoDelegate.delegate(transacaoCriada)
+                }
                 .setNegativeButton("Cancelar", null)
                 .show()
     }
 
     private fun tituloPor(tipo: Tipo): Int {
         if (tipo == Tipo.RECEITA) {
-            return R.string.adiciona_receita
+            return R.string.altera_receita
         }
-        return R.string.adiciona_despesa
+        return R.string.altera_despesa
     }
 
     private fun converteCampoValor(valorEmTexto: String): BigDecimal {

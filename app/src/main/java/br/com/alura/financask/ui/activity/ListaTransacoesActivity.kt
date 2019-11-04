@@ -42,14 +42,18 @@ class ListaTransacoesActivity : AppCompatActivity() {
         AdicionaTransacaoDialog(window.decorView as ViewGroup, this)
                 .chama(tipo, object : TransacaoDelegate {
                     override fun delegate(transacao: Transacao) {
-                        atualizaTransacoes(transacao)
+                        adicionaTransacao(transacao)
+                        atualizaTransacoes()
                         lista_transacoes_adiciona_menu.close(true)
                     }
                 })
     }
 
-    private fun atualizaTransacoes(transacao: Transacao) {
+    private fun adicionaTransacao(transacao: Transacao) {
         transacoes.add(transacao)
+    }
+
+    private fun atualizaTransacoes() {
         configuraLista()
         configuraResumo()
     }
@@ -67,11 +71,16 @@ class ListaTransacoesActivity : AppCompatActivity() {
             AlteraTransacaoDialog(window.decorView as ViewGroup, this)
                     .chama(transacao, object: TransacaoDelegate{
                         override fun delegate(transacao: Transacao) {
-                            atualizaTransacoes(transacao)
+                            alteraTransacao(position, transacao)
+                            atualizaTransacoes()
                             lista_transacoes_adiciona_menu.close(true)
                         }
                     })
         }
+    }
+
+    private fun alteraTransacao(position: Int, transacao: Transacao) {
+        transacoes[position] = transacao
     }
 
 }

@@ -11,4 +11,6 @@
     <string name="total">Total</string>
     <string name="mes">Mês</string>
     <string name="ano">Ano</string>
+    <string name="altera_receita">Altera Receita</string>
+    <string name="altera_despesa">Altera Despesa</string>
 </resources>
