@@ -2,7 +2,7 @@ package br.com.alura.financask.ui.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.View
+import android.util.Log
 import android.view.ViewGroup
 import br.com.alura.financask.R
 import br.com.alura.financask.delegate.TransacaoDelegate
@@ -30,6 +30,10 @@ class ListaTransacoesActivity : AppCompatActivity() {
         configuraResumo()
         configuraLista()
         configuraFab()
+
+        testeFuncaoDoKotlin {
+            Log.i("hof", "testeFuncaoDoKotlin enter")
+        }
     }
 
     private fun configuraFab() {
@@ -50,7 +54,13 @@ class ListaTransacoesActivity : AppCompatActivity() {
                         adiciona(transacao)
                         fechaMenu()
                     }
+
                 })
+    }
+
+    fun testeFuncaoDoKotlin(trasacaoDelegate: () -> Unit) {
+        Log.i("hof", "testeFuncaoDoKotlin execute")
+        trasacaoDelegate()
     }
 
     private fun adiciona(transacao: Transacao) {
